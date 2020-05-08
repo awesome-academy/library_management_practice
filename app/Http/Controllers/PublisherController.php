@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Publisher;
-use Illuminate\Support\Facades\DB;
+use App\Http\Requests\PublisherRequest;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class PublisherController extends Controller
 {
@@ -15,16 +16,17 @@ class PublisherController extends Controller
      */
     public function index()
     {
+        $pagi = config('seting.paginate');
         $filters = request()->only('action', 'key');
 
         if($filters && $filters['action'] == 'search'){
             // for search
-            $publisher = DB::table('publishers')->where('name_publisher', 'like', '%'.$filters['key'].'%')
-                                        ->orderBy('id','ASC')->get();
+            $publisher = Publisher::where('name_publisher', 'like', '%'.$filters['key'].'%')
+                                        ->orderBy('id','ASC')->paginate($pagi);
         }
         else{
             
-            $publisher = DB::table('publishers')->orderBy('id','ASC')->get();
+            $publisher = Publisher::orderBy('id','ASC')->paginate($pagi);
         }
         
         return view('publishers.publisher', ['publisher' => $publisher]);
@@ -46,9 +48,20 @@ class PublisherController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PublisherRequest $request)
     {
-        //
+        try {
+            $publisher = [
+            'name_publisher' => $request->name_publisher,
+            'email' => $request->email,
+            'address' => $request->address,
+        ];
+        Publisher::create($publisher);
+
+        return redirect()->back()->with(['create_success' => trans('controller/user.create_success') ]);
+        } catch (ModelNotFoundException $e) {
+            throw new Exception($e->getMessage());
+        }
     }
 
     /**
@@ -70,8 +83,13 @@ class PublisherController extends Controller
      */
     public function edit($id)
     {
-        $publisher = Publisher::where('id', $id)->first();
-        return view('publishers.edit_publisher',compact('publisher'));
+        try {
+            $publisher = Publisher::where('id', $id)->first();
+            
+            return view('publishers.edit_publisher',compact('publisher'));
+        } catch (ModelNotFoundException $e) {
+            throw new Exception($e->getMessage());
+        }
     }
 
     /**
@@ -83,7 +101,18 @@ class PublisherController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        try {
+            $publisher = [
+            'name_publisher' => $request->name_publisher,
+            'email' => $request->email,
+            'address' => $request->address,
+        ];
+        Publisher::where('id', '=', $id)->update($publisher);
+
+        return redirect()->back()->with(['update_success' => trans('controller/user.update_success') ]);
+        } catch (ModelNotFoundException $e) {
+            throw new Exception($e->getMessage());
+        }
     }
 
     /**
@@ -95,6 +124,7 @@ class PublisherController extends Controller
     public function destroy($id)
     {
         $publisher = Publisher::destroy($id);
-        return redirect('publishers');
+
+        return redirect('publishers')->with(['delete_success' => trans('controller/user.delete_success') ]);
     }
 }

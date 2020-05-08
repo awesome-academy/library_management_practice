@@ -20,7 +20,7 @@
                             <th scope="col"> {{ trans('books/book.author') }} </th>
                             <th scope="col"> {{ trans('books/book.publisher') }} </th>
                             <th scope="col"> {{ trans('books/book.status') }} </th>
-                            <th scope="col"> {{ trans('books/book.option') }} </th>
+                            <th class="width_t" scope="col"> {{ trans('books/book.option') }} </th>
                         </tr>
                     </thead>
                     {{-- data below --}}
@@ -34,11 +34,11 @@
                             <td scope="row">{{ $book->id_publisher }}</td>
                             <td scope="row">{{ BookHelper::getRole($book->status) }}</td>
                             <td>
-                                <a href="{{ route('books.edit',$book->id) }}"><button class="btn_edit" title="Edit" type="submit" value="Edit"> {{ trans('books/book.edit') }} </button></a>
+                                <a href="{{ route('books.edit',$book->id) }}"><button class="btn_edit edit_user" title="Edit" type="submit" value="Edit"> {{ trans('books/book.edit') }} </button></a>
                                 <form action="{{ route('books.destroy',$book->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="btn_delete" title="Delete" type="submit" value="Delete"> {{ trans('books/book.delete') }} </button>
+                                    <button class="btn_delete delete_user" title="Delete" type="submit" value="Delete"> {{ trans('books/book.delete') }} </button>
                                 </form>
                             </td>
                         </tr>

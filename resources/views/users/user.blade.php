@@ -8,7 +8,7 @@
     <div class="container-fluid list_book">
         <div class="row">
             <div class="col-9">
-                <button type="button" class="btn_new"><a href="{{ route('users.create') }}">{{ trans('users/user.add_new') }}</a></button>
+                <a type="button" class="btn_new" href="{{ route('users.create') }}">{{ trans('users/user.add_new') }}</a>
             </div>
             <div class="col-3">
                 <div class="search-user">

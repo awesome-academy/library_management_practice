@@ -1,6 +1,6 @@
     <!-- Responsive Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg_tool fixed-top">
-        <a class="navbar-brand" href="#">{{ trans('partials/navbar.libra') }}</a>
+        <a class="navbar-brand" href="{{ route('home') }}">{{ trans('partials/navbar.libra') }}</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>

@@ -183,7 +183,7 @@ a.footer_logo{
     font-weight: 700;
     width: 60px;
 }
-button.btn_edit a {
+a.btn_edit  {
     color: white;
     text-decoration: none;
 }
@@ -223,6 +223,8 @@ th.width_t{
 }
 .edit_btn{
     padding:inherit;
+    color: white;
+    text-decoration: none;
 }
 .btn_book_cancel{
     background: red;
@@ -234,6 +236,10 @@ th.width_t{
     font-weight: 700;
     width: 90px;
     border-radius: 3px;
+}
+a.btn_book_cancel{
+    color: white;
+    text-decoration: none;
 }
 .btn_book_edit{
     background: #6f2b95;
