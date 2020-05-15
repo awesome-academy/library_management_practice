@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Mail;
 use App\Models\Borrow;
+use App\Models\User;
 use App\Models\Book;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\ Auth;
+use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -25,7 +27,7 @@ class BorrowController extends Controller
     public function index()
     {
         $take = config('setting.paginate');
-        $listborrow = Borrow::where('id_user', '=' , Auth::user()->id)->orderBy('id', 'DESC')->paginate($take);
+        $listborrow = Borrow::where('id_user', '=' , Auth::user()->id)->orderBy('id', 'ASC')->paginate($take);
 
         return view('borrows.list_borrow', compact('listborrow'));
     }
@@ -38,6 +40,11 @@ class BorrowController extends Controller
     public function create()
     {
         //
+    }
+
+    public function contact()
+    {
+        return view('borrows.contact');
     }
 
     /**
@@ -76,6 +83,15 @@ class BorrowController extends Controller
                 'id_book' => $id,
             ];
             Borrow::create($borrow);
+
+            $admins = User::where('role', '=', 1)->pluck('email');
+            Mail::send('borrows.user_borrow',[
+            ], function($mail) use ($admins)
+            {
+                $mail->to($admins[0])->cc($admins[1]) ;
+                $mail->from('v.phuc021@gmail.com');
+                $mail->subject('You have a borrow request');
+            });
 
             return redirect()->back()->with(['borrow-success' => trans('borrows/borrow.success_wait')]);
         }

@@ -15,6 +15,7 @@
             <div class="form-group edit_book">
                 @if (session('update_success'))
                     <div class="alert alert-success mb-0 mt-2" role="alert">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                         {{ session('update_success') }}
                     </div>
                 @endif
